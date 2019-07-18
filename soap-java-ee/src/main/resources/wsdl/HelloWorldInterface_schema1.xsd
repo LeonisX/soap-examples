@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://soap.leonis.md/" xmlns:tns="http://soap.leonis.md/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="helloWorldWebMethod" type="tns:helloWorldWebMethod"/>
+
+  <xs:element name="helloWorldWebMethodResponse" type="tns:helloWorldWebMethodResponse"/>
+
+  <xs:complexType name="helloWorldWebMethod">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="helloWorldWebMethodResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

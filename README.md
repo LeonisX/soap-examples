@@ -190,7 +190,7 @@ Hello World JAX-WS Leonis
 
 В пакете `md.leonis.soap.jaxws` будет создано 4 новых класса. Это то же самое, что описано в WSDL файле, но в более понятном для нас виде.
 
-![wsgen result](./doc/postman.png "wsgen result")
+![wsgen result](./doc/wsgen.png "wsgen result")
 
 Можно выполнить кое-что поинтереснее. Все доступные ключи утилиты можно посмотреть, запустив wsgen без параметров, мы воспользуется несколькими из них.
 
@@ -494,7 +494,7 @@ Setting the server's publish address to be http://localhost:8080/hello/newEndpoi
 
 WSDL файл скачивается и на его основе генерируется целое семейство классов:
 
-![wsdl2java result](./doc/wsimport.png "wsdl2java result")
+![wsdl2java result](./doc/wsdl2java.png "wsdl2java result")
 
 Класс `HelloWorldWSClient`, правда, ещё предстоит написать, но он является упрощённой версией клиентов, которые мы видели ранее:
 

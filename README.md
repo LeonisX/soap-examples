@@ -447,7 +447,7 @@ Creating Service {http://soap.leonis.md}serviceName from class md.leonis.soap.He
 Setting the server's publish address to be http://localhost:8080/hello/serviceName
 ```
 
-*Если очень хочется, то можно указать `<context-root>/</context-root> и получить ещё более простой URL: `http://localhost:8080/serviceName`*
+*Если очень хочется, то можно указать `<context-root>/</context-root>` и получить ещё более простой URL: `http://localhost:8080/serviceName`*
 
 Кстати, если кто не знает, есть возможность ещё немного настроить ендпоинты. Там же создаём файл `web.xml`:
 

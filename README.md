@@ -1,407 +1,16 @@
-JSR 224: JavaTM API for XML-Based Web Services (JAX-WS) 2.0
-https://jcp.org/en/jsr/detail?id=224
-
-https://javaee.github.io/metro-jax-ws/
-JAX-WS RI 2.3.1 is a Web Services framework...
-
 # Simple examples of SOAP JAX-WS servers and clients for Maven and Java 8
+# Простые примеры серверов и клиентов SOAP JAX-WS для Maven и Java 8
 
-# Основы JAX-WS и SOAP для современного программиста
+Серия примеров, рассчитанная на современного программиста, не знакомого с SOAP, WSDL и JAX-WS.
+Рассчитана на быстрое знакомство с технологией, без глубокого погружения в теоретические дебри.
 
-Честно говоря, не известно сколько ещё современных Java-проектов используют SOAP. В-основном, это должны быть очень старые проекты, или проекты поновее, которым приходится “общаться” со старичками.
+Читать следует в таком порядке:
 
-Типичная задача в энтерпрайзе такая. Есть сервер, общение с которым ведётся по SOAP протоколу. Нужно передать ему какие-то данные, или получить у него какие-то данные.
-В обоих случаях придётся писать клиента на основе той спецификации, которую предоставят владельцы сервера. Эта спецификация называется WSDL.
+* [Основы JAX-WS и SOAP для современного программиста](doc/chapter-1.md)
+* [SOAP HelloWorld для Java SE](doc/chapter-2.md)
 
-Обычно решение сводится к автоматической генерации клиентских файлов и написанию простенького клиента.
 
-*Технология SOAP, особенно, если начать вникать в неё глубоко, является непростой, а после знакомства с REST вообще складывается впечатление, что SOAP это просто невероятно заумная технология.*
 
-*Например, почему бы просто не отправлять XML-документы, получив, ко всему прочему, прирост производительности?*
-
-*Новичок видит непонятную груду классов, сопровождающих сервисы, совсем не очевидный XML, и думает “зачем так сложно-то?”*
-
-*Добивает ситуацию громадное разнообразие примеров и документации в сети, среди которых даже примеры уровня HelloWorld вызывают откровенное недоумение.*
-
-*В этом документе мы постараемся взглянуть на SOAP с другой стороны. Тут не будет теории, её хватает в сети.*
-
-**Запомните. Не стремитесь сразу же читать WSDL файлы. Это только введёт в заблуждение. Они создаются роботами для роботов. Начните с самого минимального примера, и разобравшись, 
-как он работает, можно будет разобраться и с более тяжёлыми примерами.**
-
-Итак, SOAP. Это всего лишь ещё один протокол обмена данными в сети. Его отличительная особенность – платформонезависимость. XML сообщения одинаково хорошо отправляются 
-и принимаются на Linux, Windows и других системах. То есть, Windows-клиент может работать с Linux-сервером и наоборот. 
-
-SOAP-сообщение хранится в конверте (envelope). Как и в случае конверта почтовых сообщений, в нём есть заголовок (`header`) и тело (`body`). Есть ещё элемент `fault`, он возвращается в случае ошибки.
-В отличие от REST, SOAP не привязан к HTTP, однако, чаще всего он используется именно поверх HTTP. 
-
-При разработке SOAP приложений используется два принципа. Обычно на стороне сервера пишется код, потом на его основе генерируется WSDL файл, и уже на стороне клиента на основе 
-этого WSDL-файла генерируются классы клиента.
-
-Все примеры ниже рассчитаны на `Java 8` и `Maven`. Для Java 9 и выше всё чуть-чуть интереснее, надо будет подключать дополнительные зависимости.
-
-https://stackoverflow.com/questions/51892528/migration-jaxws-application-from-java-8-to-java-11
-
-На Java существует несколько реализаций спецификации веб-сервисов, например `Metro`, `Apache CXF`, `Apache Axis2` (не считая эталонной реализации от Sun, идущей в комплекте с `JDK`).
-В примерах мы в основном будем использовать реализацию по умолчанию, а в контейнере `WildFly` используется `Apache CXF`. 
-
-## SOAP HelloWorld для Java SE
-
-Чтобы понять как всё работает, надо начать с самого начала.
-Давайте напишем простейший SOAP веб-сервис. Для его работы не нужен будет даже сервер приложений. В pom.xml никаких специальных зависимостей не требуется.
-
-Надо сразу понять - в SOAP без интерфейса никуда. Если им пренебречь, то при запуске клиента получится ошибка: `Exception in thread "main" java.lang.IllegalArgumentException: md.leonis.soap.HelloWorldWS is not an interface`.
-
-*Интерфейс это прежде всего контракт, так что пишпте контракт а потом уже его конкретную реализацию.*
-
-```
-package md.leonis.soap;
-
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.Style;
-import java.util.ArrayList;
-
-@WebService
-@SOAPBinding(style = Style.DOCUMENT)
-public interface HelloWorldInterface {
-
-   @WebMethod
-   String helloWorldWebMethod(String name);
-
-   @WebMethod
-   ArrayList<String> helloWorldArrayListWebMethod(String name);
-}
-```
-
-Прошу прощение за названия классов и методов, это было сделано специально, чтобы лучше показать принцип. 
-Обычно интерфейс и реализация в примерах называются: `HelloWorld`, `HelloWorldImpl`. Благодаря аннотациям веб-сервисы получаются компактными и понятными.
-
-Больше теории:
-
-https://docs.oracle.com/cd/E82085_01/150/retail_soa_enabler_tool_guide/or-rse-Standards.htm
-https://www.w3.org/2002/07/soap-translation/russian/part0.html
-https://www.w3.org/TR/soap12-part1/ (Section 3.1.1, Section 5)
-https://www.w3.org/TR/soap12-part2/
-https://www.ehealthontario.on.ca/architecture/education/courses/service-oriented-architecture/downloads/SOA-ServiceNamingConventions.pdf
- 
-У каждой аннотации несколько параметров, не поленитесь почитать, для чего они нужны.
-
-```
-@WebService(endpointInterface = "md.leonis.soap.HelloWorldInterface")
-public class HelloWorldWS implements HelloWorldInterface {
-
-   @Override
-   public String helloWorldWebMethod(String name) {
-      return "Hello World JAX-WS " + name;
-   }
-
-   @Override
-   public ArrayList<String> helloWorldArrayListWebMethod(String name) {
-      return new ArrayList<>(Arrays.asList("Response", helloWorldWebMethod(name)));
-   }
-}
-```
-
-Веб-сервис `HelloWorldWS` реализует интерфейс `HelloWorldInterface`. Для `endpointInterface` нужно указать полное имя реализуемого интерфейса `md.leonis.soap.HelloWorldInterface`. 
-Если этого не сделать, то в клиенте получим `Exception in thread "main" javax.xml.ws.WebServiceException: Undefined port type: {http://soap.leonis.md/}HelloWorldInterface`.
-Как с этим бороться можно прочесть далее.
-
-Сервис готов, но надо его запустить. Для этого напишем ещё один класс.
-
-```
-package md.leonis.soap;
-
-import javax.xml.ws.Endpoint;
-
-public class HelloWorldWSPublisher {
-
-    public static void main(String[] args) {
-        Endpoint.publish("http://localhost:8080/hello", new HelloWorldWS());
-        Endpoint.publish("http://localhost:8080/hello2", new HelloWorldWS());
-    }
-}
-```
-
-Обратите внимание, что публикуется два ендпоинта. Публиковать можно любое количество. После публикации последнего ендпоинта приложение не завершает свою работу, а находится в режиме ожидания запросов.
-
-Давайте сразу напишем ещё и клиент.
-
-```
-package md.leonis.soap;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-import java.net.URL;
-
-public class HelloWorldWSClient {
- 
-   public static void main(String[] args) throws Exception {
- 
-      URL url = new URL("http://localhost:8080/hello?wsdl");
- 
-        QName qname = new QName("http://soap.leonis.md/", "HelloWorldWSService");
- 
-        Service service = Service.create(url, qname);
- 
-        HelloWorldInterface hello = service.getPort(HelloWorldInterface.class);
- 
-        System.out.println(hello.helloWorldWebMethod("Leonis"));
-        System.out.println(hello.helloWorldArrayListWebMethod("Leonis"));
-    }
-}
-```
-
-* В `url` мы указали путь к WSDL файлу (добавляем `?wsdl` к опубликованному ендпоинту).
-* В `Qualified Name` нельзя допускать ошибок. Если не знаете, что писать, то напишите любой текст и запустите клиента. В сообщении об ошибке будут содержаться правильные значения для `namespaceUri` и `localPart`.
-
-`Exception in thread "main" javax.xml.ws.WebServiceException: {http://soap.leonis2.md/}HelloWorldWSService is not a valid service. Valid services are: {http://soap.leonis.md/}HelloWorldWSService`
-
-* Обратите внимание на `namespaceUri`. Это название пакета "`md.leonis.soap`", развёрнутое наоборот, в виде URL: "`http://soap.leonis.md/`".
-* Так же обратите внимание на `localPart`. Это название нашего сервиса `HelloWorldWS` + “`Service`”.
-
-Далее создаём объект `Service`, берём нужный порт и вызываем его методы. Это типовой код, его можно просто использовать, не задумываясь об особенностях реализации.
-
-Всё готово к запуску.
-
-`mvn clean package`
-
-Запускаем `Publisher`, затем `Client` и если всё было сделано верно, то результат вызова веб-сервиса будет таким:
-
-```
-Hello World JAX-WS Leonis
-[Response, Hello World JAX-WS Leonis]
-```
-
-У SOAP веб-сервиса можно запросить `WSDL` документ. Но лучше сначала открыть `XSD` документ и посмотреть, что там внутри. Откроем в браузере ссылку: http://localhost:8080/hello?xsd=1
-
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. -->
-<xs:schema xmlns:tns="http://soap.leonis.md/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://soap.leonis.md/">
-    <xs:element name="helloWorldArrayListWebMethod" type="tns:helloWorldArrayListWebMethod"></xs:element>
-    <xs:element name="helloWorldArrayListWebMethodResponse" type="tns:helloWorldArrayListWebMethodResponse"></xs:element>
-    <xs:element name="helloWorldWebMethod" type="tns:helloWorldWebMethod"></xs:element>
-    <xs:element name="helloWorldWebMethodResponse" type="tns:helloWorldWebMethodResponse"></xs:element>
-    <xs:complexType name="helloWorldWebMethod">
-        <xs:sequence>
-            <xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="helloWorldWebMethodResponse">
-        <xs:sequence>
-            <xs:element name="return" type="xs:string" minOccurs="0"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="helloWorldArrayListWebMethod">
-        <xs:sequence>
-            <xs:element name="arg0" type="xs:string" minOccurs="0"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="helloWorldArrayListWebMethodResponse">
-        <xs:sequence>
-            <xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-</xs:schema>
-```
-
-В этом документе описаны аргументы и возвращаемые значения. Например, можно разобрать, что метод `helloWorldWebMethod` принимает один параметр типа `String` и возвращает тоже строку.
-
-Нам специально не пришлось писать типы `helloWorldWebMethod` и `helloWorldWebMethodResponse`. Если этого очень захочется, то выполните в проекте (там, где `pom.xml`) следующую команду:
-
-`wsgen -cp ./target/classes -s ./src/main/java md.leonis.soap.HelloWorldWS`
-
-Чтобы она отработала успешно, необходимо, чтобы `/bin` директория Java была в `classpath`. Утилита `wsge`n идёт в комплекте с JDK. 
-Так же необходимо, чтобы проект был скомпилирован. Утилита wsgen работает с `.class` файлами, а не с `.java`.
-
-В пакете `md.leonis.soap.jaxws` будет создано 4 новых класса. Это то же самое, что описано в WSDL файле, но в более понятном для нас виде.
-
-![wsgen result](./doc/wsgen.png "wsgen result")
-
-Можно выполнить кое-что поинтереснее. Все доступные ключи утилиты можно посмотреть, запустив wsgen без параметров, мы воспользуется несколькими из них.
-
-`wsgen -verbose -cp ./target/classes -s ./src/main/java -d ./target/classes md.leonis.soap.HelloWorldWS -wsdl -r ./src/main/resources/wsdl`
-
-В этом примере мы сразу же создаём `.java`, `.class` файлы, а что самое важное – `WSDL` и `XSD` файлы. Команда сразу не выполнится, надо будет создать все необходимые директории.
-
-Морально мы уже готовы. Откроем в браузере ссылку на WSDL:
-
-http://localhost:8080/hello?wsdl
-
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. -->
-<!-- Generated by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. -->
-<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap.leonis.md/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://soap.leonis.md/" name="HelloWorldWSService">
-    <types>
-        <xsd:schema>
-            <xsd:import namespace="http://soap.leonis.md/" schemaLocation="http://localhost:8080/hello?xsd=1"></xsd:import>
-        </xsd:schema>
-    </types>
-    <message name="helloWorldWebMethod">
-        <part name="parameters" element="tns:helloWorldWebMethod"></part>
-    </message>
-    <message name="helloWorldWebMethodResponse">
-        <part name="parameters" element="tns:helloWorldWebMethodResponse"></part>
-    </message>
-    <message name="helloWorldArrayListWebMethod">
-        <part name="parameters" element="tns:helloWorldArrayListWebMethod"></part>
-    </message>
-    <message name="helloWorldArrayListWebMethodResponse">
-        <part name="parameters" element="tns:helloWorldArrayListWebMethodResponse"></part>
-    </message>
-    <portType name="HelloWorldInterface">
-        <operation name="helloWorldWebMethod">
-            <input wsam:Action="http://soap.leonis.md/HelloWorldInterface/helloWorldWebMethodRequest" message="tns:helloWorldWebMethod"></input>
-            <output wsam:Action="http://soap.leonis.md/HelloWorldInterface/helloWorldWebMethodResponse" message="tns:helloWorldWebMethodResponse"></output>
-        </operation>
-        <operation name="helloWorldArrayListWebMethod">
-            <input wsam:Action="http://soap.leonis.md/HelloWorldInterface/helloWorldArrayListWebMethodRequest" message="tns:helloWorldArrayListWebMethod"></input>
-            <output wsam:Action="http://soap.leonis.md/HelloWorldInterface/helloWorldArrayListWebMethodResponse" message="tns:helloWorldArrayListWebMethodResponse"></output>
-        </operation>
-    </portType>
-    <binding name="HelloWorldWSPortBinding" type="tns:HelloWorldInterface">
-        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
-        <operation name="helloWorldWebMethod">
-            <soap:operation soapAction=""></soap:operation>
-            <input>
-                <soap:body use="literal"></soap:body>
-            </input>
-            <output>
-                <soap:body use="literal"></soap:body>
-            </output>
-        </operation>
-        <operation name="helloWorldArrayListWebMethod">
-            <soap:operation soapAction=""></soap:operation>
-            <input>
-                <soap:body use="literal"></soap:body>
-            </input>
-            <output>
-                <soap:body use="literal"></soap:body>
-            </output>
-        </operation>
-    </binding>
-    <service name="HelloWorldWSService">
-        <port name="HelloWorldWSPort" binding="tns:HelloWorldWSPortBinding">
-            <soap:address location="http://localhost:8080/hello"></soap:address>
-        </port>
-    </service>
-</definitions>
-```
-
-Кроме аргументов, которые уже нам знакомы по `XSD` файлу тут есть порты и операции. Так же описан сам сервис и способ, как можно до него достучаться. 
-Повторюсь, __ни один человек в здравом уме не станет писать такой файл вручную__. Уж тем более, что это очень примитивный пример, в реальной жизни код может достигать десятки килобайт! 
-Так что, не стоит сильно грустить по поводу того, что WSDL такой непонятный. Читать его будут роботы, а не люди.
-
-*WSDL (Web Services Description Language) — язык описания веб-сервисов и доступа к ним, основанный на языке XML. Это документ, с помощью которого можно написать клиента для веб-службы. 
-Если говорить простым языком, то в нём перечислены методы сервиса, их аргументы и возвращаемые данные. На самом деле, всё, конечно, намного сложнее.*
-
-Работа клиента `HelloWorldWSClient` скрывает то, что происходит на самом деле. А на самом деле, даже если вызывается самый простой сервис, ему передаётся `XML` документ, и отвечает он тоже на `XML-языке`. 
-Общение ведётся с помощью HTTP-метода `POST`.
-
-`POST http://localhost:8080/hello`
-
-Тело запроса:
-
-```
-<?xml version="1.0" ?>
-	<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-		<S:Body>
-			<ns2:helloWorldWebMethod xmlns:ns2="http://soap.leonis.md/">
-				<arg0>Leonis</arg0>
-			</ns2:helloWorldWebMethod>
-		</S:Body>
-	</S:Envelope>
-```
-
-Если не обращать внимание на формат конверта (в нём даже нет заголовка, только тело), то перед нами обычный вызов метода, описанный необычным образом. 
-Методу `helloWorldWebMethod` из пространства имён `http://soap.leonis.md/` передаётся аргумент `“Leonis”`. Это, конечно, не совсем так, но так размышлять проще. 
-На самом деле, мы передаём объект-контейнер `helloWorldWebMethod`, в котором хранится один аргумент. Сервер знает, что с ним дальше делать.
-
-Ответ так же возвращается в виде объекта-контейнера `helloWorldWebMethodResponse`:
-
-```
-<?xml version="1.0" ?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-    <S:Body>
-        <ns2:helloWorldWebMethodResponse xmlns:ns2="http://soap.leonis.md/">
-            <return>Hello World JAX-WS Leonis</return>
-        </ns2:helloWorldWebMethodResponse>
-    </S:Body>
-</S:Envelope>
-```
-
-![postman window](./doc/postman.png "postman window")
-
-Аналогично можно запросить массив данных.
-
-Запрос:
-
-```
-<?xml version="1.0" ?>
-	<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-		<S:Body>
-			<ns2:helloWorldArrayListWebMethod xmlns:ns2="http://soap.leonis.md/">
-				<arg0>Leonis</arg0>
-			</ns2:helloWorldArrayListWebMethod>
-		</S:Body>
-	</S:Envelope>
-```
-
-Ответ: 
-
-```
-<?xml version="1.0" ?>
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-    <S:Body>
-        <ns2:helloWorldArrayListWebMethodResponse xmlns:ns2="http://soap.leonis.md/">
-            <return>Response</return>
-            <return>Hello World JAX-WS Leonis</return>
-        </ns2:helloWorldArrayListWebMethodResponse>
-    </S:Body>
-</S:Envelope>
-```
-
-Разобравшись с этими простыми примерами, можно по аналогии писать сервисы посложнее и запросы к ним.
-
-### Реализация без использования интерфейса
-
-Сервер, на самом деле, можно создавать и без интерфейса, используя лишь одну реализацию, 
-но тогда в клиенте надо будет использовать другую реализацию метода `service.getPort`
-
-Фрагмент сервиса:
-
-```
-@WebService
-public class HelloWorldWS implements HelloWorldInterface {
-```
-
-Фрагмент клиента:
-
-```
-HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", "HelloWorldWSPort"), HelloWorldInterface.class);
-```
-
-Тут мы видим, что в любом случае интерфейс на стороне клиента необходим. Так что, сэкономим на интерфейсе для сервера - всё равно напишем интерфейс для клиента, что как минимум бестолково.
-Единственная выгода от такого способа - возможность полностью переименовать сервис (для потребителей).
-
-```
-@WebService(name = "name")
-public class HelloWorldWS implements HelloWorldInterface {
-```
-
-Фрагмент клиента:
-
-```
-HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", "namePort"), HelloWorldInterface.class);
-```
-
-В этих примерах мы видим, что квалифицированное имя порта по умолчанию это имя класса, реализующего сервис + "Port".
-
-Итого, у нас есть уже два способов для переименования сервиса:
-* Переименовать класс веб-сервиса
-* Указать в аннотации любое другое имя
 
 ## SOAP RPC
 
@@ -420,7 +29,7 @@ HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", 
 
 Файл `pom.xml` не сильно изменился. Основные отличия:
 
-```
+```xml
 <packaging>war</packaging>
 
     <properties>
@@ -430,7 +39,7 @@ HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", 
 
 Интерфейс:
 
-```
+```java
 package md.leonis.soap;
 
 import javax.jws.WebMethod;
@@ -446,7 +55,7 @@ public interface HelloWorldInterface {
 
 Сервис:
 
-```
+```java
 package md.leonis.soap;
 
 import javax.jws.WebService;
@@ -505,7 +114,7 @@ WSDL published to: file:/C:/wildfly/standalone/data/wsdl/soap-java-ee-1.0-SNAPSH
 Ничто нам не мешает тут же вызвать этот сервис, или, хотя бы, получить его WSDL файл, но URL не слишком-то и красивый. Давайте его улучшим. 
 В каталоге `/main` создадим каталог `webapp/WEB-INF`, а в нём файл `jboss-web.xml`. Для других контейнеров существуют аналогичные инструменты настройки.
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web xmlns="http://www.jboss.com/xml/ns/javaee"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -535,7 +144,7 @@ Setting the server's publish address to be http://localhost:8080/hello/serviceNa
 
 Кстати, если кто не знает, есть возможность ещё немного настроить ендпоинты. Там же создаём файл `web.xml`:
 
-```
+```xml
 <?xml version="1.0"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -582,7 +191,7 @@ WSDL файл скачивается и на его основе генерир�
 
 Класс `HelloWorldWSClient`, правда, ещё предстоит написать, но он является упрощённой версией клиентов, которые мы видели ранее:
 
-```
+```java
 public class HelloWorldWSClient {
  
    public static void main(String[] args) {
@@ -604,7 +213,7 @@ public class HelloWorldWSClient {
 Отдельно следует обратить внимание на ключ `-wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl`. 
 Он говорит о том, что WSDL файл `HelloWorldWSService.wsdl` в приложении будет находиться в каталоге `/resources/wsdl`. Вот пример сгенерированного сервиса:
 
-```
+```java
 public class HelloWorldWSService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -624,7 +233,7 @@ public class HelloWorldWSService extends Service {
 
 Если не указать ключ `-wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl`, то сервис будет несколько иным:
 
-```
+```java
     public final static QName SERVICE = new QName("http://soap.leonis.md/", "HelloWorldWSService");
     public final static QName HelloWorldWSPort = new QName("http://soap.leonis.md/", "HelloWorldWSPort");
     static {
@@ -655,7 +264,7 @@ public class HelloWorldWSService extends Service {
 Врядли это кому-нибудь пригодится на производстве, но есть возможность динамически подключаться к необходимым веб-службам.
 Пример такого клиента: 
 
-```
+```java
 URL url = new URL("http://localhost:8080/for/dispatcher?wsdl");
 QName qname = new QName("http://soap.leonis.md/", "HelloWorldWSService");
 Service service = Service.create(url, qname);
@@ -680,7 +289,7 @@ transformer.transform(responseSource, responseResult);
 
 Имеется возможность вызывать даже те операции, которые не были определены в WSDL файле
 
-```
+```java
 Service helloService = Service.create(new QName("http://samples/hello", "HelloService"));
 helloService.addPort(
      new QName("http://samples/hello", "HelloPort"),
@@ -703,7 +312,7 @@ helloService.addPort(
 
 Интерфейс сервиса. Ничего необычного:
 
-```
+```java
 @WebService
    public interface HelloWorld {
    
@@ -715,7 +324,7 @@ helloService.addPort(
 Реализация сервиса. Для обращения к заголовкам нам понадобится контекст веб-сервисов `WebServiceContext`.
 Из него можно достать много полезной информации, но сейчас нас интересуют HTTP-заголовки.
 
-```
+```java
 @WebService(endpointInterface = "md.leonis.soap.HelloWorld")
 public class HelloWorldImpl implements HelloWorld {
 
@@ -756,7 +365,7 @@ public class HelloWorldImpl implements HelloWorld {
 
 Паблишер обычный:
 
-```
+```java
 public class HelloWorldPublisher {
 
     public static void main(String[] args) {
@@ -767,7 +376,7 @@ public class HelloWorldPublisher {
 
 А вот в клиенте появились новые конструкции:
 
-```
+```java
 public class HelloWorldClient {
 
     private static final String WS_URL = "http://localhost:8080/hello?wsdl";
@@ -814,7 +423,7 @@ public class HelloWorldClient {
 
 Клиент: отправляем валидный заголовок. Он будет примерно таким: `Basic dXNlcjpwYXNzd29yZA==`:
 
-```
+```java
 String usernameColonPassword = "user:password";
 String basicAuthPayload = "Basic " + Base64.getEncoder().encodeToString(usernameColonPassword.getBytes());
 headers.put("Authorization", Collections.singletonList(basicAuthPayload));
@@ -822,7 +431,7 @@ headers.put("Authorization", Collections.singletonList(basicAuthPayload));
 
 Сервис: разбираем этот заголовок:
 
-```
+```java
 List authList = (List) http_headers.get("Authorization");
 
 String username = "";
@@ -844,31 +453,203 @@ if (authList != null && authList.get(0).toString().toLowerCase().startsWith("bas
 
 ## SOAP HelloWorld для Java EE с BASIC Authentication 
 
-TODO
+Этот пример более приближен к реальной жизни.
+
+Сначала добавим пользователя приложения в `Wildfly`:
+
+В `bin` каталоге `WildFly` выполняем команду `add-user.bat`:
+
+Добавим пользователя `user` с паролем `password`.
+
+![Add Application User](./doc/add-user.png "Add Application User")
+
+Если кому интересно, то в файлах `application-roles.properties` (их два) будет: `user=USER_ROLE`
+
+а в файлах `application-users.properties` (их два) будет: `user=70fa846ee00b3dd28dbcbe83fb38a660`
+
+Теперь настраиваем файл `web.xml`:
+
+Для простоты закроем доступ ко всем ресурсам сервера:
+
+```xml
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>BASIC-Auth</web-resource-name>
+            <description>Security constraints</description>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>USER_ROLE</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>ApplicationRealm</realm-name>
+    </login-config>
+
+    <security-role>
+        <role-name>USER_ROLE</role-name>
+    </security-role>
+```
+
+![Postman BASIC Auth](./doc/postman-basic-auth.png "Postman BASIC Auth")
+
+### Защита методов аннотацией RolesAllowed
 
 
+Защищаем метод `helloWorldWebMethod` веб-сервиса следующей аннотацией:
+
+`@RolesAllowed("USER_ROLE")`
+
+Теперь
 
 
+Деплоим сервис в контейнере и успешно получаем `WSDL`-файл, авторизовавшись как `user`.
 
 
+А теперь вопрос - как написать клиент? Все клиенты, рассмотренные ранее читали WSDL файл напрямую из ендпоинта. А в нашем случае он закрыт.
 
+Давайте возьмём уже сгенерированный клиент из примера `SOAP HelloWorld для Java EE` и будем его модифицировать.
 
+### Прямая аутентификация
 
+Одно из возможных решений - аутентифицироваться до того, как произойдёт обращение к ендпоинту.
 
+В классе ServiceName добавляем в `static` блок следующий код:
 
+```java
+Authenticator myAuth = new Authenticator() {
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+         return new PasswordAuthentication("user", "password".toCharArray());
+    }
+};
 
+Authenticator.setDefault(myAuth);
+```
 
+Это очень простое решение, но к сожалению, в производстве оно не всегда применимо, поскольку, имя пользователя и пароль
+могут храниться в базе данных или каком-то защищённом хранилище, или, в файле настроек.
 
+### Работа с сохранённым WSDL-файлом
 
+Давайте сохраним WSDL-файл и будем использовать его вместе с проектом. Открываем ссылку `http://localhost:8080/hello/serviceName?wsdl`.
+Сохраним его как `ServiceName.wsdl` в каталоге `resources/wsdl`.
 
+Будем работать с классом `ServiceName`.
 
+Сначала уберём из аннотации `@WebServiceClient` - `wsdlLocation`. Чтение происходит при старте, в это время у нас ещё нет данных для аутентификации.
 
+```java
+@WebServiceClient(name = "serviceName", targetNamespace = "http://soap.leonis.md/", wsdlLocation = "http://localhost:8080/hello/serviceName?wsdl")
+```
 
+Далее модифицируем статический блок.
 
+```java
+        URL url = null;
+        WebServiceException e = null;
+        try {
+            url = Service.class.getClassLoader().getResource("wsdl/ManageExchangeWSDL.WSDL");
+        } catch (Exception ex) {
+            e = new WebServiceException(ex);
+        }
+        SERVICENAME_WSDL_LOCATION = url;
+        SERVICENAME_EXCEPTION = e;
+```
 
+Поскольку в этом решении мы читаем из ресурсов, то и выполнять надо уже JAR-файл.
 
+```
+mvn clean package
+java -jar ./target/soap-java-ee-basic-auth-client-1.0-SNAPSHOT.jar 
+```
 
+Всё работает. 
 
+А как быть при отладке в `IDE`? Можно, например, передавать полный путь к WSDL-файлу в командной строке.
+
+Класс `HelloWorldWSClient`:
+
+```java
+Service service;
+
+if (args.length > 0) {
+    service = new ServiceName(args[0]);
+} else {
+    service = new ServiceName();
+}
+```
+
+Класс `ServiceName` мы отрефакторим.
+
+```java
+import javax.xml.namespace.QName;
+import javax.xml.ws.*;
+import java.io.File;
+import java.net.URL;
+
+/**
+ * This class was generated by the JAX-WS RI.
+ * JAX-WS RI 2.2.9-b130926.1035
+ * Generated source version: 2.2
+ * <p>
+ * Modified!!!
+ */
+@WebServiceClient(name = "serviceName", targetNamespace = "http://soap.leonis.md/")
+public class ServiceName extends Service {
+
+    private static URL SERVICENAME_WSDL_LOCATION;
+    private final static QName SERVICENAME_QNAME = new QName("http://soap.leonis.md/", "serviceName");
+
+    public ServiceName() {
+        super(getWsdlLocation(null), SERVICENAME_QNAME);
+    }
+
+    public ServiceName(String wsdlPath) {
+        super(getWsdlLocation(wsdlPath), SERVICENAME_QNAME);
+    }
+
+    /**
+     * @return returns HelloWorldInterface
+     */
+    @WebEndpoint(name = "portName")
+    public HelloWorldInterface getPortName() {
+        return super.getPort(new QName("http://soap.leonis.md/", "portName"), HelloWorldInterface.class);
+    }
+
+    /**
+     * @param features A list of {@link WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
+     * @return returns HelloWorldInterface
+     */
+    @WebEndpoint(name = "portName")
+    public HelloWorldInterface getPortName(WebServiceFeature... features) {
+        return super.getPort(new QName("http://soap.leonis.md/", "portName"), HelloWorldInterface.class, features);
+    }
+
+    private static URL getWsdlLocation(String wsdlPath) {
+        if (SERVICENAME_WSDL_LOCATION != null) {
+            return SERVICENAME_WSDL_LOCATION;
+        }
+
+        try {
+            if (wsdlPath != null) {
+                SERVICENAME_WSDL_LOCATION = new File(wsdlPath).toURI().toURL();
+            } else {
+                SERVICENAME_WSDL_LOCATION = ServiceName.class.getClassLoader().getResource("wsdl/ServiceName.wsdl");
+            }
+        } catch (Exception ex) {
+            throw new WebServiceException(ex);
+        }
+
+        return SERVICENAME_WSDL_LOCATION;
+    }
+
+}
+```
+
+Теперь этот класс сначала пытается обратиться к файлу, переданному из командной строки, а если его нет, то читает из ресурсов.
 
 
 

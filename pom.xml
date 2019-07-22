@@ -22,6 +22,8 @@
         <module>soap-java-se-rpc</module>
         <module>soap-java-ee</module>
         <module>soap-java-se-password-auth</module>
+        <module>soap-java-ee-basic-auth</module>
+        <module>soap-java-ee-basic-auth-client</module>
     </modules>
 
 </project>

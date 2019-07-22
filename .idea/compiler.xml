@@ -6,14 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="soap-java-ee" />
         <module name="soap-java-se-rpc" />
+        <module name="soap-java-ee-basic-auth" />
         <module name="soap-java-se-password-auth" />
         <module name="soap-java-se-document" />
-        <module name="soap-java-ee" />
+        <module name="soap-java-ee-basic-auth-client" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="soap-java-ee-basic-auth" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

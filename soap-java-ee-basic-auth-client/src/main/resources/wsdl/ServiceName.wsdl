@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.leonis.md/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="serviceName" targetNamespace="http://soap.leonis.md/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap.leonis.md/" elementFormDefault="unqualified" targetNamespace="http://soap.leonis.md/" version="1.0">
+            <xs:element name="helloWorldWebMethod" type="tns:helloWorldWebMethod"/>
+            <xs:element name="helloWorldWebMethodResponse" type="tns:helloWorldWebMethodResponse"/>
+            <xs:complexType name="helloWorldWebMethod">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="helloWorldWebMethodResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="helloWorldWebMethodResponse">
+        <wsdl:part element="tns:helloWorldWebMethodResponse" name="parameters">
+    </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="helloWorldWebMethod">
+        <wsdl:part element="tns:helloWorldWebMethod" name="parameters">
+    </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="HelloWorldInterface">
+        <wsdl:operation name="helloWorldWebMethod">
+            <wsdl:input message="tns:helloWorldWebMethod" name="helloWorldWebMethod">
+    </wsdl:input>
+            <wsdl:output message="tns:helloWorldWebMethodResponse" name="helloWorldWebMethodResponse">
+    </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="serviceNameSoapBinding" type="tns:HelloWorldInterface">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="helloWorldWebMethod">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="helloWorldWebMethod">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="helloWorldWebMethodResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="serviceName">
+        <wsdl:port binding="tns:serviceNameSoapBinding" name="portName">
+            <soap:address location="http://localhost:8080/hello/serviceName"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

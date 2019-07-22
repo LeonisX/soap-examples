@@ -17,20 +17,20 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "serviceName", targetNamespace = "http://soap.leonis.md", wsdlLocation = "http://localhost:8080/hello/serviceName?wsdl")
+@WebServiceClient(name = "serviceName", targetNamespace = "http://soap.leonis.md/", wsdlLocation = "http://localhost:8080/hello/newEndpoint?wsdl")
 public class ServiceName
     extends Service
 {
 
     private final static URL SERVICENAME_WSDL_LOCATION;
     private final static WebServiceException SERVICENAME_EXCEPTION;
-    private final static QName SERVICENAME_QNAME = new QName("http://soap.leonis.md", "serviceName");
+    private final static QName SERVICENAME_QNAME = new QName("http://soap.leonis.md/", "serviceName");
 
     static {
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost:8080/hello/serviceName?wsdl");
+            url = new URL("http://localhost:8080/hello/newEndpoint?wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }
@@ -69,7 +69,7 @@ public class ServiceName
      */
     @WebEndpoint(name = "portName")
     public HelloWorldInterface getPortName() {
-        return super.getPort(new QName("http://soap.leonis.md", "portName"), HelloWorldInterface.class);
+        return super.getPort(new QName("http://soap.leonis.md/", "portName"), HelloWorldInterface.class);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ServiceName
      */
     @WebEndpoint(name = "portName")
     public HelloWorldInterface getPortName(WebServiceFeature... features) {
-        return super.getPort(new QName("http://soap.leonis.md", "portName"), HelloWorldInterface.class, features);
+        return super.getPort(new QName("http://soap.leonis.md/", "portName"), HelloWorldInterface.class, features);
     }
 
     private static URL __getWsdlLocation() {

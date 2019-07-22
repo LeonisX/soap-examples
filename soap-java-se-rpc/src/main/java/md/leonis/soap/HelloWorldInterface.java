@@ -10,9 +10,9 @@ import java.util.ArrayList;
 @SOAPBinding(style = Style.RPC)
 public interface HelloWorldInterface {
 
-	@WebMethod
-	String helloWorldWebMethod(String name);
+    @WebMethod
+    String helloWorldWebMethod(String name);
 
-	@WebMethod
-	ArrayList<String> helloWorldArrayListWebMethod(String name);
+    @WebMethod
+    ArrayList<String> helloWorldArrayListWebMethod(String name);
 }

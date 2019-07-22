@@ -3,7 +3,7 @@ package md.leonis.soap;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService(name = "HelloWorldInterface", targetNamespace = "http://soap.leonis.md/")
+@WebService(name = "HelloWorldInterface")
 public interface HelloWorldInterface {
 
     @WebMethod

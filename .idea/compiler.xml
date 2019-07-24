@@ -8,11 +8,16 @@
         <outputRelativeToContentRoot value="true" />
         <module name="soap-java-ee" />
         <module name="soap-java-se-rpc" />
+        <module name="soap-apache-cxf-jax-ws" />
         <module name="soap-java-ee-basic-auth" />
         <module name="soap-java-se-password-auth" />
+        <module name="soap-apache-cxf-pojo" />
         <module name="soap-java-se-document" />
         <module name="soap-java-ee-basic-auth-client" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="java_first_pojo" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

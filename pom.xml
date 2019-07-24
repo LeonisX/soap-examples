@@ -24,6 +24,8 @@
         <module>soap-java-se-password-auth</module>
         <module>soap-java-ee-basic-auth</module>
         <module>soap-java-ee-basic-auth-client</module>
+        <module>soap-apache-cxf-pojo</module>
+        <module>soap-apache-cxf-jax-ws</module>
     </modules>
 
 </project>

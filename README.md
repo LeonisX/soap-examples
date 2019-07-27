@@ -12,6 +12,7 @@
 * [SOAP HelloWorld для Java SE](doc/chapter-2.md) (soap-java-se-document)
 * [SOAP HelloWorld для Java SE (RPC Style)](doc/chapter-3.md) (soap-java-se-rpc)
 * [SOAP HelloWorld для Java EE](doc/chapter-4.md) (soap-java-ee)
+* [Правила присвоения имён SOAP](doc/soap-naming-convention.md)
 
 **Intermediary**
 

@@ -39,9 +39,9 @@ public interface HelloWorldInterface {
 
 * https://docs.oracle.com/cd/E82085_01/150/retail_soa_enabler_tool_guide/or-rse-Standards.htm
 * https://www.w3.org/2002/07/soap-translation/russian/part0.html
-* https://www.w3.org/TR/soap12-part1/ (Section 3.1.1, Section 5)
+* https://www.w3.org/TR/soap12-part1/ (Section 3.1.1)
 * https://www.w3.org/TR/soap12-part2/
-* https://www.ehealthontario.on.ca/architecture/education/courses/service-oriented-architecture/downloads/SOA-ServiceNamingConventions.pdf
+* https://www.ehealthontario.on.ca/architecture/education/courses/service-oriented-architecture/downloads/SOA-ServiceNamingConventions.pdf (Section 5)
  
 ```java
 @WebService(endpointInterface = "md.leonis.soap.HelloWorldInterface")

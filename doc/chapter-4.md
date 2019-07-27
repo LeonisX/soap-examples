@@ -71,7 +71,7 @@ public class HelloWorldWS implements HelloWorldInterface {
 Возможные поля для аннотации `@WebMethod`:
 
 * `operationName` - имя операции, связанной с текущим методом. По умолчанию это название самого метода. То есть, это возможность переименовать метод и не более того.
-* `action` - действие для этой операции. По умолчанию что-то вроде `http://soap.leonis.md/HelloWorldInterface/helloWorldWebMethodRequest`. Для SOAP связывания это значение SOAPAction заголовка.
+* `action` - действие для этой операции. По умолчанию что-то вроде `http://soap.leonis.md/HelloWorldInterface/helloWorldWebMethodRequest`. Для SOAP привязки это значение SOAPAction заголовка.
 Пока непонятно где это используется на практике.
 * `exclude` - возможность не показывать метод в веб-сервисе. Надо указывать только в классе-реализации сервиса, при этом первые два элемента (`operationName`, `action`) недопустимы.
 

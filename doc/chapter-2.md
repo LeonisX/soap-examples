@@ -372,4 +372,45 @@ HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", 
 * Переименовать класс веб-сервиса
 * Указать в аннотации любое другое имя
 
+### SAAJ-Client
+
+`SAAJ` расшифровывается как "SOAP с API вложений для Java".
+
+В классе `HelloWorldWSSAAJClient` можно изучить пример клиента, в котором конверт и его содержимое создаются вручную.
+Результат так же обрабатывается вручную.
+
+Этот пример интерестен тем, что демонстрирует как работу с `SOAP Envelope`, так и то, что для создания клиента совершенно не обязательно
+иметь реализованные интерфейсы веб-сервиса. Более того, мы никак не ограниченны форматом, то есть, можно отправлять
+любой XML, главное, чтобы сервис умел его обрабатывать.
+
+К тому же, `SAAJ` позволяет манипулировать вложениями (`SOAPPart`), обрабатывать ошибки (`SOAPFault`), и прочее. Не поленитесь прочесть о нём в официальной документации.
+
+Фрагмент кода:
+
+```java
+SOAPConnectionFactory connectionFactory = SOAPConnectionFactory.newInstance();
+SOAPConnection connection = connectionFactory.createConnection();
+
+MessageFactory messageFactory = MessageFactory.newInstance();
+SOAPMessage message = messageFactory.createMessage();
+
+message.getSOAPHeader().detachNode(); // We don't heed header here.
+
+SOAPBody body = message.getSOAPBody();
+QName bodyName = new QName("http://soap.leonis.md/", "helloWorldWebMethod", "ns2");
+SOAPBodyElement bodyElement = body.addBodyElement(bodyName);
+
+QName qName = new QName("arg0");
+SOAPElement argument = bodyElement.addChildElement(qName);
+argument.addTextNode("Leonis");
+
+URL endpoint = new URL("http://localhost:8080/hello");
+SOAPMessage response = connection.call(message, endpoint);
+
+System.out.println(responseBody.getElementsByTagName("return").item(0).getTextContent());
+
+```
+
+Естественно, на производстве таких конструкций лучше избегать, используя высокоуровневые API.
+
 [<< назад](chapter-1.md) | [⌂ оглавление](../README.md) | [далее >>](chapter-3.md)

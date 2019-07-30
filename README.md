@@ -11,6 +11,7 @@
 * [Основы JAX-WS и SOAP для современного программиста](doc/chapter-1.md)
 * [SOAP HelloWorld для Java SE](doc/chapter-2.md) (soap-java-se-document)
 * [SOAP HelloWorld для Java SE (RPC Style)](doc/chapter-3.md) (soap-java-se-rpc)
+* [Теория: от XML до стилей сообщений SOAP](doc/chapter-3.5.md)
 * [SOAP HelloWorld для Java EE](doc/chapter-4.md) (soap-java-ee)
 * [Правила присвоения имён SOAP](doc/soap-naming-convention.md)
 
@@ -23,6 +24,7 @@
 * [Apache CXF](doc/chapter-7.5.md)
 * [SOAP HelloWorld для Apache CXF (POJO)](doc/chapter-8.md) (soap-apache-cxf-pojo)
 * [SOAP HelloWorld для Apache CXF (JAX-WS)](doc/chapter-9.md) (soap-apache-cxf-jax-ws)
-
+* [Apache CXF client as EJB](doc/chapter-10.md) (soap-apache-cxf-ejb-client, soap-apache-cxf-ejb-server)
+* [Утилиты wsgen, wsimport, xcj, java2ws, wsdl2java](doc/utils.md)
 
 На этом всё, жду любые замечания и вопрос на почту.

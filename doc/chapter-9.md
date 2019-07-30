@@ -1,12 +1,12 @@
 ## SOAP HelloWorld для Apache CXF (JAX-WS)
 
-[Ссылка на репозиторий](./soap-apache-cxf-jax-ws)
+[Ссылка на репозиторий](../soap-apache-cxf-jax-ws)
 
 Итак, `Java First demo using JAX-WS APIs`
 
 Мы научимся, как на основе `Apache CXF` с помощью `JAX-WS` API разрабатывать сервисы, используя подход "code first".
 
-**Не использовать с EE-контейнерами, вроде Wildfly!!!**
+**Не использовать этот пример с EE-контейнерами, вроде Wildfly!!!**
 
 В этом примере используется `CXF Servlet`, и такой подход очень плохо подходит для деплоя в такие контейнеры, как `Wildfly`.
 Дело в том, что у Wildfly уже есть предустановленные модули `org.apache.cxf`, `org.apache.cxf.impl`, `org.apache.cxf.services-sts` и `org.apache.cxf.ws-security`,
@@ -16,11 +16,13 @@
 
 * Отключить в `WildFly` всё, что мешает, по-сути, превратив его в банальный контейнер сервлетов.
 * Поверить, что (документация по интеграции WildFly и Apache CXF)[https://cxf.apache.org/docs/application-server-specific-configuration-guide.html#ApplicationServerSpecificConfigurationGuide-JBossApplicationServer] написана верно и следовать её шагам. 
-Как минимум, надо будет убрать из `pom.xm`l (`scope=provided`) всё, что связано с `Apache CXF` и `Java EE`. Потом написать `web.xml`. Установить модуль `Spring`, ...
+Как минимум, надо будет убрать из `pom.xml` (`scope=provided`) всё, что связано с `Apache CXF` и `Java EE`. Потом написать `web.xml`, ...
 
 Оба подхода в производстве скорее всего неприменимы, надо реализовать более грамотное решение и отказаться от `CXF Servlet`.
 
 *Для наших учебных целей подойдёт контейнер сервлетов `Tomcat`.*
+
+И не отчаивайтесь так. В следующей главе мы всё-таки заставим `Apache CXF` подружиться с `WildFly`.
 
 ### pom.xml
 

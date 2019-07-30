@@ -1,6 +1,6 @@
 ## SOAP HelloWorld для Apache CXF (POJO)
 
-[Ссылка на репозиторий](./soap-apache-cxf-pojo)
+[Ссылка на репозиторий](../soap-apache-cxf-pojo)
 
 Все примеры, связанные с `Apache CXF` взяты из официальных примеров, доступных вместе с фреймворком. [Ссылка для скачивания](https://cxf.apache.org/download.html).
 

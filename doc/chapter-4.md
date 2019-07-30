@@ -1,6 +1,6 @@
 ## SOAP HelloWorld для Java SE (RPC Style)
 
-[Ссылка на репозиторий](./soap-java-ee)
+[Ссылка на репозиторий](../soap-java-ee)
 
 ## SOAP HelloWorld для Java EE
 
@@ -64,7 +64,7 @@ public class HelloWorldWS implements HelloWorldInterface {
 То есть, в нашем примере это поле избыточно. Уж если указываете, то в одном месте, а не в двух, как в примере. Если значения будут различаться, то это приведёт к тяжёлым последствиям при генерации WSDL файла.
 * `name` - нельзя использовать вместе с полем `endpointInterface`. По-сути, это синоним для веб-службы. Уж если используем (например, `name = "name"`), 
 то клиент должен быть несколько иным: `HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", "namePort"), HelloWorldInterface.class);`
-* `wsdlLocation` - путь к WSDL файлу. Имеет смысл указывать, если WSDL-файл по какой-то причине отличается от генерируемого автоматически. Возможно так же, что загрузка с диска не так нагружает процессор. По умолчанию WSDL-документ генерируется автоматически при запуске ендпоинта. 
+* `wsdlLocation` - путь к WSDL файлу. Имеет смысл указывать, если WSDL-файл по какой-то причине отличается от генерируемого автоматически. Например, в него включены XSD-схемы. Возможно так же, что загрузка с диска не так нагружает процессор. По умолчанию WSDL-документ генерируется автоматически при запуске ендпоинта. 
 Пример `wsdlLocation = "wsdl/HelloWorldWSService.wsdl"`. Пример ошибки, если WSDL файл не был найден 
 `Exception in thread "main" com.sun.xml.internal.ws.server.ServerRtException: [failed to localize] cannot.load.wsdl(MyService.wsdl)`
 
@@ -164,7 +164,7 @@ Creating Service {http://soap.leonis.md}serviceName from class md.leonis.soap.He
 Setting the server's publish address to be http://localhost:8080/hello/newEndpoint
 ```
 
-### Генерация SOAP-клиента
+### Генерация SOAP-клиента на основе WSDL файла
 
 Давайте воспользуемся существующим WSDL документом, чтобы сгенерировать клиента для нашей веб-службы. Для этого отлично подойдёт утилита `wsimport` из `JDK`, её настройки во многом напоминают `wsgen`:
 
@@ -189,9 +189,17 @@ public class HelloWorldWSClient {
 
 Утилита `wsimport` может так же работать и с `WSDL-файлами`, пример такого параметра: `-wsdlLocation ../src/resources/META-INF/service.wsdl`
 
+### Генерация SOAP-клиента на основе WSDL файла и XSD-схемы
+
+Если XSD-схемы идут отдельно, то их следует тоже подать на вход `wsimport` с ключом `-b`:
+
+`wsimport HelloWorldWSService.wsdl -b HelloWorldWSService_schema1.xsd`
+
+### Генерация SOAP-клиента с помощью Apache CXF
+
 При работе с фреймворком `Apache CXF` можно воспользоваться следующей утилитой:
 
-`wsdl2java.bat -p md.leonis.soap -client -server -impl -wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl HelloWorldWSService.wsdl`
+`wsdl2java.bat -p md.leonis.soap -client -server -impl -b HelloWorldWSService_schema1.xsd -wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl HelloWorldWSService.wsdl`
 
 В данном случае из `WSDL` и `XSD` файлов генерируются сразу клиент, сервер, а также реализация-заглушка. 
 Отдельно следует обратить внимание на ключ `-wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl`. 
@@ -244,4 +252,4 @@ public class HelloWorldWSService extends Service {
 
 Далее мы рассмотрим несколько случаев, более приближенных к реальной жизни.
 
-[<< назад](chapter-3.md) | [⌂ оглавление](../README.md) | [далее >>](chapter-5.md)
+[<< назад](chapter-3.5.md) | [⌂ оглавление](../README.md) | [далее >>](chapter-5.md)

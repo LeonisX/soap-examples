@@ -15,7 +15,7 @@
 В официальной документации описано два решения, но сразу скажем, что это путь боли и страданий, по которому идти не стоит.
 
 * Отключить в `WildFly` всё, что мешает, по-сути, превратив его в банальный контейнер сервлетов.
-* Поверить, что (документация по интеграции WildFly и Apache CXF)[https://cxf.apache.org/docs/application-server-specific-configuration-guide.html#ApplicationServerSpecificConfigurationGuide-JBossApplicationServer] написана верно и следовать её шагам. 
+* Поверить, что [документация по интеграции WildFly и Apache CXF](https://cxf.apache.org/docs/application-server-specific-configuration-guide.html#ApplicationServerSpecificConfigurationGuide-JBossApplicationServer) написана верно и следовать ей. 
 Как минимум, надо будет убрать из `pom.xml` (`scope=provided`) всё, что связано с `Apache CXF` и `Java EE`. Потом написать `web.xml`, ...
 
 Оба подхода в производстве скорее всего неприменимы, надо реализовать более грамотное решение и отказаться от `CXF Servlet`.
@@ -399,4 +399,4 @@ http://localhost:8080/soap_apache_cxf_jax_ws/services/hello_world?wsdl
 
 Если выбран `WildFly`, то следует сполна насладиться `Java EE` интеграцией, и подход с `CXF Servlet` не годится.
 
-[<< назад](chapter-7.md) | [⌂ оглавление](../README.md) | [далее >>](chapter-9.md)
+[<< назад](chapter-8.md) | [⌂ оглавление](../README.md) | [далее >>](chapter-10.md)

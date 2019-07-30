@@ -1,9 +1,9 @@
 ## Apache CXF клиент как EJB
 
-[Ссылка на репозиторий](../soap-apache-cxf-ejb-client)
-[Ссылка на репозиторий](../soap-apache-cxf-ejb-server)
+[Ссылка на репозиторий сервера](../soap-apache-cxf-ejb-server).
+[Ссылка на репозиторий клиента](../soap-apache-cxf-ejb-client)
 
-В этой, последней главе, мы напишем более реалистичный клиент, который будет деплоиться в `WildFly`, и вызываться по `REST` запросу.
+В этой главе мы напишем более реалистичный клиент, который будет деплоиться в `WildFly`, и вызываться по `REST` запросу.
 Фактически, не важно как клиент будет вызываться, по таймеру, или по JMS-сообщению, главное принцип.
 Клиент будет обращаться к серверу, защищённому BASIC аутентификацией.
 
@@ -13,7 +13,7 @@
 Поскольку нам придётся использовать достаточно большой зверинец зависимостей, очень легко запутаться в версиях
 и нарваться на `Jar Hell`. Чтобы этого не случилось, можно воспользоваться уже готовым решением: 
 [коллекцией BOM файлов для WildFly](https://github.com/wildfly/boms). 
-(Детали из книги)[http://www.mastertheboss.com/jboss-frameworks/maven-tutorials/jboss-maven/using-wildfly-boms].
+[Детали из книги](http://www.mastertheboss.com/jboss-frameworks/maven-tutorials/jboss-maven/using-wildfly-boms).
 
 В них перечисленны все библиотеки, существующие в конкретной версии `WildFly`, и что важно, их версии.
 
@@ -131,7 +131,7 @@
 
 В документации `WildFly` описано 2 профиля: `Full` и `Web`.
 
-Поскольку приложение будет очень простым, то нам будет достаточно профиля настроек, используемого по умолчанию (`standalone.xml`).
+Поскольку приложение будет очень простым, то нам достаточно профиля настроек, используемого по умолчанию (`standalone.xml`).
 Он соответствует `веб-профилю JavaEE` + некоторые расширения, вроде `RESTFul` веб-сервисов и поддержки удалённого вызова `EJB3`. 
 
 А это: логирование, DataSource, поиск JNDI, Servlet 4.0, JSP 2.3, JavaMail 1.6, веб-сервисы (SOAP и REST), JSF 2.3, JPA 2.2, EJB 3.2 и CDI 2.0.
@@ -307,7 +307,7 @@ Caused by: com.sun.xml.bind.api.AccessorException: java.time.format.DateTimePars
 
 ##### jboss-deployment-structure.xml
 
-Это та самая магия, которая заставит работать нашего клиента.Нужно подключить модуль `org.apache.cxf.impl`.
+Это та самая магия, которая заставит работать нашего клиента. Нужно подключить модуль `org.apache.cxf.impl`.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -325,8 +325,12 @@ Caused by: com.sun.xml.bind.api.AccessorException: java.time.format.DateTimePars
 </jboss-deployment-structure>
 ```
 
+Иначе светит такая ошибка:
+
+```
 java.lang.NoClassDefFoundError: org/apache/cxf/jaxws/JaxWsProxyFactoryBean
 Caused by: java.lang.ClassNotFoundException: org.apache.cxf.jaxws.JaxWsProxyFactoryBean from [Module "deployment.soap-apache-cxf-ejb-client-1.0-SNAPSHOT.war" from Service Module Loader]
+```
 
 ##### Титульная страница
 
@@ -403,18 +407,18 @@ org.jboss.resteasy.spi.UnhandledException: javax.xml.ws.soap.SOAPFaultException:
     Headers: {Authorization=Basic dXNlcjpwYXNzd29yZA==, SOAPAction="", Accept=*/*}
     Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:create xmlns:ns2="http://server.ws.leonis.md/"/></soap:Body></soap:Envelope>
     
-    15:32:36,129 INFO  [org.apache.cxf.services.UserService.RESP_IN] (default task-1) RESP_IN
-        Content-Type: text/xml;charset=UTF-8
-        ResponseCode: 200
-        ExchangeId: ae8851dd-f392-4c33-b814-65d2ec6e5173
-        ServiceName: userService
-        PortName: UserServiceImplPort
-        PortTypeName: UserService
-        Headers: {Cache-Control=no-cache, no-store, must-revalidate, connection=keep-alive, content-type=text/xml;charset=UTF-8, Expires=0, Pragma=no-cache, Content-Length=347, Date=Tue, 30 Jul 2019 12:32:36 GMT}
-        Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:createResponse xmlns:ns2="http://server.ws.leonis.md/"><return><id>1</id><name>newUser</name><uid>1</uid><dates><date>2019-07-30T15:32:36.107+03:00</date><localDate>2019-07-30</localDate></dates><notes/></return></ns2:createResponse></soap:Body></soap:Envelope>
+15:32:36,129 INFO  [org.apache.cxf.services.UserService.RESP_IN] (default task-1) RESP_IN
+    Content-Type: text/xml;charset=UTF-8
+    ResponseCode: 200
+    ExchangeId: ae8851dd-f392-4c33-b814-65d2ec6e5173
+    ServiceName: userService
+    PortName: UserServiceImplPort
+    PortTypeName: UserService
+    Headers: {Cache-Control=no-cache, no-store, must-revalidate, connection=keep-alive, content-type=text/xml;charset=UTF-8, Expires=0, Pragma=no-cache, Content-Length=347, Date=Tue, 30 Jul 2019 12:32:36 GMT}
+    Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:createResponse xmlns:ns2="http://server.ws.leonis.md/"><return><id>1</id><name>newUser</name><uid>1</uid><dates><date>2019-07-30T15:32:36.107+03:00</date><localDate>2019-07-30</localDate></dates><notes/></return></ns2:createResponse></soap:Body></soap:Envelope>
 ```
 
-Далее от `Client` мы получаем ссылку на `org.apache.cxf.transport.http.HTTPConduitHTTPConduit`. 
+Далее от `Client` мы получаем ссылку на `org.apache.cxf.transport.http.HTTPConduit`. 
 Слово "conduit" переводися как канал или трубопровод. 
 `HTTPConduit` отвечает за передачу данных по транспортным протоколам `HTTP` и `HTTPS`. 
 

@@ -2,8 +2,8 @@
 
 [Ссылка на репозиторий](../soap-java-se-document)
 
-Чтобы понять основной принцип, надо написать SOAP веб-сервис. Для его работы не нужен будет даже сервер приложений. 
-В pom.xml тоже никаких специальных зависимостей не требуется.
+Чтобы быстро понять основной принцип, надо написать самый простой `SOAP` веб-сервис. Для его работы не нужен будет даже сервер приложений. 
+В `pom.xml` тоже никаких специальных зависимостей не требуется.
 
 Надо сразу понять - в SOAP без интерфейса никуда. Если им пренебречь, то при запуске клиента вылетит ошибка: `Exception in thread "main" java.lang.IllegalArgumentException: md.leonis.soap.HelloWorldWS is not an interface`.
 
@@ -32,17 +32,12 @@ public interface HelloWorldInterface {
 
 У каждой аннотации несколько параметров, позднее мы их рассмотрим.
 
-Прошу прощение за названия классов и методов, это было сделано специально, чтобы лучше показать принцип работы. 
-Обычно интерфейс и реализация в примерах называются: `HelloWorld`, `HelloWorldImpl`. Благодаря аннотациям веб-сервисы получаются компактными и понятными.
+Названия классов и методов были выбраны специально, чтобы лучше показать принцип работы. 
+Обычно интерфейс и реализация в примерах называются: `HelloWorld`, `HelloWorldImpl`. 
+Благодаря аннотациям веб-сервисы получаются компактными и понятными.
 
-Больше теории о том, как правильно именовать веб-сервисы:
+[Больше теории о том, как правильно именовать веб-сервисы](soap-naming-convention.md)
 
-* https://docs.oracle.com/cd/E82085_01/150/retail_soa_enabler_tool_guide/or-rse-Standards.htm
-* https://www.w3.org/2002/07/soap-translation/russian/part0.html
-* https://www.w3.org/TR/soap12-part1/ (Section 3.1.1)
-* https://www.w3.org/TR/soap12-part2/
-* https://www.ehealthontario.on.ca/architecture/education/courses/service-oriented-architecture/downloads/SOA-ServiceNamingConventions.pdf (Section 5)
- 
 ```java
 @WebService(endpointInterface = "md.leonis.soap.HelloWorldInterface")
 public class HelloWorldWS implements HelloWorldInterface {
@@ -111,7 +106,7 @@ public class HelloWorldWSClient {
 ```
 
 * В `url` мы указали путь к WSDL файлу (добавляем `?wsdl` к опубликованному ендпоинту).
-* В `Qualified Name` нельзя допускать ошибок. Если не знаете, что писать, то напишите любой текст и запустите клиента. 
+* В `Qualified Name` нельзя допускать ошибок. Если не знаете, что писать, то напишите любой текст и запустите клиент. 
 В сообщении об ошибке будут содержаться правильные значения для `namespaceUri` и `localPart`. Пример:
 
 `Exception in thread "main" javax.xml.ws.WebServiceException: {http://soap.leonis2.md/}HelloWorldWSService is not a valid service. Valid services are: {http://soap.leonis.md/}HelloWorldWSService`
@@ -303,18 +298,20 @@ http://localhost:8080/hello?wsdl
 Тело запроса:
 
 ```xml
-<?xml version="1.0" ?>
-	<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-		<S:Body>
-			<ns2:helloWorldWebMethod xmlns:ns2="http://soap.leonis.md/">
-				<arg0>Leonis</arg0>
-			</ns2:helloWorldWebMethod>
-		</S:Body>
-	</S:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:helloWorldWebMethod xmlns:ns2="http://soap.leonis.md/">
+         <arg0>Leonis</arg0>
+      </ns2:helloWorldWebMethod>
+   </S:Body>
+</S:Envelope>
 ```
 
-Если не обращать внимание на формат конверта (в нём даже нет заголовка, только тело), то перед нами обычный вызов метода, описанный необычным образом. 
-Методу `helloWorldWebMethod` из пространства имён `http://soap.leonis.md/` передаётся аргумент `“Leonis”`. Это, конечно, не совсем так, но так размышлять проще. 
+Если не обращать внимание на формат конверта (в нём даже нет заголовка, только тело), 
+то перед нами обычный вызов метода, описанный необычным образом. 
+Методу `helloWorldWebMethod` из пространства имён `http://soap.leonis.md/` передаётся аргумент со значением`“Leonis”`. 
+Это, конечно, не совсем так, но так размышлять проще. 
 На самом деле, мы передаём объект-контейнер `helloWorldWebMethod`, в котором хранится один аргумент. Сервер знает, что с ним дальше делать.
 
 Ответ так же возвращается в виде объекта-контейнера `helloWorldWebMethodResponse`:
@@ -337,14 +334,14 @@ http://localhost:8080/hello?wsdl
 Запрос:
 
 ```xml
-<?xml version="1.0" ?>
-	<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-		<S:Body>
-			<ns2:helloWorldArrayListWebMethod xmlns:ns2="http://soap.leonis.md/">
-				<arg0>Leonis</arg0>
-			</ns2:helloWorldArrayListWebMethod>
-		</S:Body>
-	</S:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:helloWorldArrayListWebMethod xmlns:ns2="http://soap.leonis.md/">
+         <arg0>Leonis</arg0>
+      </ns2:helloWorldArrayListWebMethod>
+   </S:Body>
+</S:Envelope>
 ```
 
 Ответ: 
@@ -373,7 +370,7 @@ http://localhost:8080/hello?wsdl
 
 ```java
 @WebService
-public class HelloWorldWS implements HelloWorldInterface {
+public class HelloWorldWS {
 ```
 
 Фрагмент клиента:
@@ -382,12 +379,13 @@ public class HelloWorldWS implements HelloWorldInterface {
 HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", "HelloWorldWSPort"), HelloWorldInterface.class);
 ```
 
-Тут мы видим, что в любом случае интерфейс на стороне клиента необходим. Так что, сэкономим на интерфейсе для сервера - всё равно напишем интерфейс для клиента, что как минимум бестолково.
+Тут мы видим, что в любом случае интерфейс на стороне клиента необходим. 
+Так что, сэкономим на интерфейсе для сервера - всё равно напишем интерфейс для клиента, что как минимум бестолково.
 Единственная выгода от такого способа - возможность полностью переименовать сервис (для потребителей).
 
 ```java
 @WebService(name = "name")
-public class HelloWorldWS implements HelloWorldInterface {
+public class HelloWorldWS {
 ```
 
 Фрагмент клиента:
@@ -396,7 +394,7 @@ public class HelloWorldWS implements HelloWorldInterface {
 HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", "namePort"), HelloWorldInterface.class);
 ```
 
-В этих примерах мы видим, что квалифицированное имя порта по умолчанию это имя класса, реализующего сервис + `"`Port`".
+В этих примерах мы видим, что квалифицированное имя порта по умолчанию это имя класса, реализующего сервис + "`Port`".
 
 Итого, у нас есть уже два способов для переименования сервиса:
 * Переименовать класс веб-сервиса
@@ -411,10 +409,11 @@ HelloWorldInterface hello = service.getPort(new QName("http://soap.leonis.md/", 
 Результат так же обрабатывается вручную.
 
 Этот пример интерестен тем, что демонстрирует как работу с `SOAP Envelope`, так и то, что для создания клиента совершенно не обязательно
-иметь реализованные интерфейсы веб-сервиса. Более того, мы никак не ограниченны форматом, то есть, можно отправлять
+иметь реализованные интерфейсы веб-сервиса. Более того, мы никак не ограничены форматом, то есть, можно отправлять
 любой XML, главное, чтобы сервис умел его обрабатывать.
 
-К тому же, `SAAJ` позволяет манипулировать вложениями (`SOAPPart`), обрабатывать ошибки (`SOAPFault`), и прочее. Не поленитесь прочесть о нём в официальной документации.
+К тому же, `SAAJ` позволяет манипулировать вложениями (`SOAPPart`), обрабатывать ошибки (`SOAPFault`), и прочее. 
+Не поленитесь прочесть о нём в официальной документации.
 
 Фрагмент кода:
 

@@ -111,4 +111,4 @@
 
 `wsdl2java.bat -p md.leonis.soap -client -server -impl -b HelloWorldWSService_schema1.xsd -wsdlLocation classpath:wsdl/HelloWorldWSService.wsdl HelloWorldWSService.wsdl`
 
-[<< назад](chapter-9.md) | [⌂ оглавление](../README.md)
+[<< назад](chapter-10.md) | [⌂ оглавление](../README.md)

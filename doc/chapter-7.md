@@ -1,9 +1,7 @@
-## SOAP HelloWorld для Java SE с BASIC Authentication
+## SOAP HelloWorld для Java EE с BASIC Authentication
 
-[Ссылка на репозиторий сервера](./soap-java-ee-basic-auth)
-[Ссылка на репозиторий клиента](./soap-java-ee-basic-auth-client)
-
-## SOAP HelloWorld для Java EE с BASIC Authentication 
+[Ссылка на репозиторий сервера](../soap-java-ee-basic-auth). 
+[Ссылка на репозиторий клиента](../soap-java-ee-basic-auth-client)
 
 Этот пример более приближен к реальной жизни.
 

@@ -4,7 +4,7 @@
 
 Все примеры, связанные с `Apache CXF` взяты из официальных примеров, доступных вместе с фреймворком. [Ссылка для скачивания](https://cxf.apache.org/download.html).
 
-Код, где было возможно, был упрощён. Копирайты на пол страницы тоже убраны. Сорри.
+Код, где возможно, был упрощён. Копирайты на пол страницы тоже убраны. Сорри.
 
 Итак, `Java First POJO DEMO`
 
@@ -178,13 +178,9 @@ Exception in thread "main" org.apache.cxf.binding.soap.SoapFault: Could not inst
 
 #### ReflectionServiceFactoryBean
 
-При помощи рефлексии изучает класс иIntrospects a class and builds a {@link Service} from it. If a WSDL URL is
- * specified, a Service model will be directly from the WSDL and then metadata
- * will be filled in from the service class. If no WSDL URL is specified, the
- * Service will be constructed directly from the class structure.
- */
-//CHECKSTYLE:OFF:NCSS    -   This class is just huge and complex
-public class ReflectionServiceFactoryBean
+При помощи рефлексии изучает класс и и строит из него `Service`.
+Если указан WSDL URL, то модель Service будет построена на его основе, после чего эта модель будет дополнена метаданными из класса сервиса.
+Если путь к WSDL не указан, что Service будет построен на основе структуры класса.
 
 ### Клиент
 
@@ -270,10 +266,9 @@ public final class Client {
 
 #### Bus
 
-Шина это самое центровое место в `CXF`. Его основная задача - предоставлять доступ к различным расширениям,
-таким как `DestinationFactoryManager`, `ConduitFactoryManager`, `BindingFactoryManager`, и так далее.
-etc). В зависимости от реализации шины, она так же может отвечать за привязку различных внутренностей `CXF`.
- */
+Шина это самое центровое место в `CXF`. Её основная задача - предоставлять доступ к различным расширениям,
+таким как `DestinationFactoryManager`, `ConduitFactoryManager`, `BindingFactoryManager`, и так далее. 
+В зависимости от реализации шины, она так же может отвечать за привязку различных внутренностей `CXF`.
 
 ### Сборка и запуск в Maven
 

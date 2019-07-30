@@ -11,11 +11,11 @@
 
 ```java
 @WebService
-   public interface HelloWorld {
+public interface HelloWorld {
    
-       @WebMethod
-       String getHelloWorldAsStringPassword();
-   }
+    @WebMethod
+    String getHelloWorldAsStringPassword();
+}
 ```
 
 Реализация сервиса. Для обращения к заголовкам нам понадобится контекст веб-сервисов `WebServiceContext`.

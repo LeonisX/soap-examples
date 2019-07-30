@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <!--<module name="org.jboss.ws.cxf.jbossws-cxf-client" services="import" />-->
+            <module name="org.apache.cxf.impl">
+                <imports>
+                    <include path="META-INF"/>
+                    <include path="META-INF/cxf"/>
+                </imports>
+            </module>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

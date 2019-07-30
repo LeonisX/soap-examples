@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>soap-apache-cxf-ejb-server</artifactId>
+    <name>Apache CXF server as EJB</name>
+    <description>Apache CXF server as EJB</description>
+    <packaging>war</packaging>
+
+    <parent>
+        <artifactId>soap-samples</artifactId>
+        <groupId>leonis</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <cxf.version>3.3.2</cxf.version>
+    </properties>
+
+    <!--<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2ws-plugin</artifactId>
+                <version>${cxf.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                        <version>${cxf.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-rt-frontend-simple</artifactId>
+                        <version>${cxf.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <className>md.leonis.ws.server.UserService</className>
+                    <serviceName>UserServiceImpl</serviceName>
+                    <genServer>true</genServer>
+                    <genClient>true</genClient>
+                    <genWsdl>true</genWsdl>
+                    <verbose>true</verbose>
+                    &lt;!&ndash;<attachWsdl>true</attachWsdl>&ndash;&gt;
+                    <outputFile>C:\projects\soap-examples\soap-apache-cxf-ejb-client\src\main\resources\wsdl\ws.wsdl
+                    </outputFile>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>process-classes</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java2ws</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>-->
+
+</project>

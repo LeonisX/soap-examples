@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="userService" targetNamespace="http://server.ws.leonis.md/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://server.ws.leonis.md/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://server.ws.leonis.md/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://server.ws.leonis.md/" version="1.0">
+
+  <xs:element name="addHobbie" type="tns:addHobbie"/>
+
+  <xs:element name="addHobbieResponse" type="tns:addHobbieResponse"/>
+
+  <xs:element name="addNote" type="tns:addNote"/>
+
+  <xs:element name="addNoteResponse" type="tns:addNoteResponse"/>
+
+  <xs:element name="create" type="tns:create"/>
+
+  <xs:element name="createResponse" type="tns:createResponse"/>
+
+  <xs:element name="get" type="tns:get"/>
+
+  <xs:element name="getResponse" type="tns:getResponse"/>
+
+  <xs:element name="save" type="tns:save"/>
+
+  <xs:element name="saveResponse" type="tns:saveResponse"/>
+
+  <xs:element name="updateDates" type="tns:updateDates"/>
+
+  <xs:element name="updateDatesResponse" type="tns:updateDatesResponse"/>
+
+  <xs:element name="user" type="tns:user"/>
+
+  <xs:complexType name="updateDates">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="dates" type="tns:dates"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dates">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="date" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="localDate" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateDatesResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="uid" type="xs:decimal"/>
+      <xs:element minOccurs="0" name="dates" type="tns:dates"/>
+      <xs:element name="notes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="key" type="xs:string"/>
+                  <xs:element minOccurs="0" name="value" type="xs:int"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="hobbies" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addNote">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="key" type="xs:string"/>
+      <xs:element name="value" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addNoteResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="get">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="create">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="createResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="save">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="user" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="saveResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addHobbie">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="hobbie" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addHobbieResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updateDates">
+    <wsdl:part name="parameters" element="tns:updateDates">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addNoteResponse">
+    <wsdl:part name="parameters" element="tns:addNoteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addNote">
+    <wsdl:part name="parameters" element="tns:addNote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get">
+    <wsdl:part name="parameters" element="tns:get">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getResponse">
+    <wsdl:part name="parameters" element="tns:getResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="create">
+    <wsdl:part name="parameters" element="tns:create">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addHobbieResponse">
+    <wsdl:part name="parameters" element="tns:addHobbieResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateDatesResponse">
+    <wsdl:part name="parameters" element="tns:updateDatesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="save">
+    <wsdl:part name="parameters" element="tns:save">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addHobbie">
+    <wsdl:part name="parameters" element="tns:addHobbie">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveResponse">
+    <wsdl:part name="parameters" element="tns:saveResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UserService">
+    <wsdl:operation name="updateDates">
+      <wsdl:input name="updateDates" message="tns:updateDates">
+    </wsdl:input>
+      <wsdl:output name="updateDatesResponse" message="tns:updateDatesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addNote">
+      <wsdl:input name="addNote" message="tns:addNote">
+    </wsdl:input>
+      <wsdl:output name="addNoteResponse" message="tns:addNoteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get">
+      <wsdl:input name="get" message="tns:get">
+    </wsdl:input>
+      <wsdl:output name="getResponse" message="tns:getResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="create" message="tns:create">
+    </wsdl:input>
+      <wsdl:output name="createResponse" message="tns:createResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="save">
+      <wsdl:input name="save" message="tns:save">
+    </wsdl:input>
+      <wsdl:output name="saveResponse" message="tns:saveResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addHobbie">
+      <wsdl:input name="addHobbie" message="tns:addHobbie">
+    </wsdl:input>
+      <wsdl:output name="addHobbieResponse" message="tns:addHobbieResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="userServiceSoapBinding" type="tns:UserService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="updateDates">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateDates">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateDatesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addNote">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addNote">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addNoteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="get">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="create">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="save">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="save">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addHobbie">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addHobbie">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addHobbieResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="userService">
+    <wsdl:port name="UserServiceImplPort" binding="tns:userServiceSoapBinding">
+      <soap:address location="http://localhost:8080/ws/userService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

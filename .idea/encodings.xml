@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/soap-apache-cxf-jax-ws" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jms-journal-reader" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/soap-apache-cxf-ejb-client" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/soap-apache-cxf-ejb-server" charset="UTF-8" />
   </component>
 </project>
